@@ -1,0 +1,11 @@
+
+/* Animated service images */
+.service-icon .sticker-animation {
+  width: 64px;
+  height: 54px;
+  display: block;
+  object-fit: contain;
+  flex-shrink: 0;
+  pointer-events: none;
+  filter: drop-shadow(0 0 7px rgba(255, 112, 40, 0.2));
+}
