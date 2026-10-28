@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -162,6 +163,36 @@
     .service-top { display: flex; align-items: start; justify-content: space-between; gap: 14px; margin-bottom: 25px; }
     .service-icon { width: 52px; height: 52px; display: grid; place-items: center; border: 1px solid rgba(255,112,40,.26); border-radius: 15px; background: linear-gradient(145deg, rgba(255,112,40,.12), rgba(255,255,255,.018)); color: var(--accent-2); }
     .service-icon svg { width: 27px; height: 27px; }
+
+    /* New animated service icons */
+    .service-icon .sticker-animation {
+      width: 64px;
+      height: 54px;
+      display: block;
+      object-fit: contain;
+      pointer-events: none;
+      filter: drop-shadow(0 0 7px rgba(255,112,40,.18));
+    }
+
+    .service-emoji {
+      display: inline-block;
+      font-size: 29px;
+      line-height: 1;
+      transform-origin: center;
+      will-change: transform;
+      filter: drop-shadow(0 0 8px rgba(255,112,40,.2));
+    }
+
+    .service-emoji.web-emoji {
+      animation: webEmojiFloat 2.4s ease-in-out infinite;
+    }
+
+    .service-icon svg.telegram-plane {
+      transform-origin: center;
+      animation: telegramPlaneFly 2.2s ease-in-out infinite;
+      will-change: transform;
+    }
+
     .service-num { color: #666970; font: 10px var(--mono); letter-spacing: .12em; }
     .service-card h3 { margin: 0 0 9px; font-size: 22px; letter-spacing: -.05em; }
     .service-card p { max-width: 460px; color: #96989f; font-size: 12px; line-height: 1.75; margin: 0; }
@@ -215,12 +246,36 @@
     .reveal { opacity: 0; transform: translateY(18px); transition: opacity .7s ease, transform .7s cubic-bezier(.2,.7,.2,1); }
     .reveal.visible { opacity: 1; transform: translateY(0); }
     .delay-1 { transition-delay: .08s; } .delay-2 { transition-delay: .16s; } .delay-3 { transition-delay: .24s; }
+
     @keyframes rotate { to { transform: rotate(360deg); } }
     @keyframes float { 0%,100% { transform: translateY(0) rotate(3deg); } 50% { transform: translateY(-12px) rotate(1deg); } }
     @keyframes glow { from { transform: scale(.88); opacity: .55; } to { transform: scale(1.1); opacity: .95; } }
     @keyframes breathe { 0%,100% { opacity: 1; } 50% { opacity: .45; } }
     @keyframes blink { to { visibility: hidden; } }
     @keyframes cardPulse { 0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255,112,40,0); } 28% { transform: scale(1.025); box-shadow: 0 0 0 7px rgba(255,112,40,.075); } 58% { transform: scale(.995); } 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255,112,40,0); } }
+
+    /* Website emoji animation */
+    @keyframes webEmojiFloat {
+      0%, 100% {
+        transform: translateY(0) rotate(-5deg) scale(1);
+      }
+      50% {
+        transform: translateY(-3px) rotate(5deg) scale(1.08);
+      }
+    }
+
+    /* Telegram paper-plane animation */
+    @keyframes telegramPlaneFly {
+      0%, 100% {
+        transform: translate(0, 0) rotate(-4deg);
+      }
+      45% {
+        transform: translate(2px, -3px) rotate(5deg);
+      }
+      70% {
+        transform: translate(0, 0) rotate(0deg);
+      }
+    }
 
     @media (max-width: 850px) {
       .nav-links { display: none; }
@@ -347,30 +402,78 @@
         </div>
         <div class="section-line"></div>
         <div class="services-grid">
+
+          <!-- SERVICE 01: WEB DEVELOPMENT -->
           <button class="service-card reveal" type="button" data-pulse aria-label="Web Development service card. Play animation.">
-            <div class="service-top"><span class="service-icon"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="2.8" y="3.8" width="18.4" height="16.4" rx="2.4" stroke="currentColor" stroke-width="1.5"/><path d="M3.5 8.2h17M7 6h.1M10 6h.1M8.5 12.1l-2.2 2.1 2.2 2.1M15.5 12.1l2.2 2.1-2.2 2.1M13.4 11.7l-2 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="service-num">SERVICE / 01</span></div>
+            <div class="service-top">
+              <span class="service-icon">
+                <span class="service-emoji web-emoji" role="img" aria-label="Animated website icon">🌐</span>
+              </span>
+              <span class="service-num">SERVICE / 01</span>
+            </div>
             <h3>Web Development</h3>
             <p>Modern, responsive websites and web applications with polished UI, smooth interactions, and reliable backend functionality.</p>
-            <div class="service-bottom"><div class="service-tags"><span class="tag">Business</span><span class="tag">Portfolio</span><span class="tag">Web apps</span></div><span class="service-arrow">↗</span></div><span class="service-status">Selected · custom-built</span>
+            <div class="service-bottom">
+              <div class="service-tags"><span class="tag">Business</span><span class="tag">Portfolio</span><span class="tag">Web apps</span></div>
+              <span class="service-arrow">↗</span>
+            </div>
+            <span class="service-status">Selected · custom-built</span>
           </button>
+
+          <!-- SERVICE 02: TELEGRAM BOTS -->
           <button class="service-card reveal delay-1" type="button" data-pulse aria-label="Telegram Bot Development service card. Play animation.">
-            <div class="service-top"><span class="service-icon"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m3 11.1 17.5-7.2-4.1 17.2-4.6-6.2-4.2 2.9.7-5.1L20.5 3.9" stroke="currentColor" stroke-width="1.55" stroke-linecap="round" stroke-linejoin="round"/><path d="m7.6 12.7 5.1 2.2" stroke="currentColor" stroke-width="1.55" stroke-linecap="round"/></svg></span><span class="service-num">SERVICE / 02</span></div>
+            <div class="service-top">
+              <span class="service-icon">
+                <svg class="telegram-plane" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="m3 11.1 17.5-7.2-4.1 17.2-4.6-6.2-4.2 2.9.7-5.1L20.5 3.9" stroke="currentColor" stroke-width="1.55" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="m7.6 12.7 5.1 2.2" stroke="currentColor" stroke-width="1.55" stroke-linecap="round"/>
+                </svg>
+              </span>
+              <span class="service-num">SERVICE / 02</span>
+            </div>
             <h3>Telegram Bot Development</h3>
             <p>Custom Telegram bots for automation, user flows, notifications, APIs, admin tools, and day-to-day operations.</p>
-            <div class="service-bottom"><div class="service-tags"><span class="tag">Automation</span><span class="tag">Bot API</span><span class="tag">Integrations</span></div><span class="service-arrow">↗</span></div><span class="service-status">Selected · custom-built</span>
+            <div class="service-bottom">
+              <div class="service-tags"><span class="tag">Automation</span><span class="tag">Bot API</span><span class="tag">Integrations</span></div>
+              <span class="service-arrow">↗</span>
+            </div>
+            <span class="service-status">Selected · custom-built</span>
           </button>
-          <button class="service-card reveal" type="button" data-pulse aria-label="Casino and Gaming Website Development service card. Play animation.">
-            <div class="service-top"><span class="service-icon"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 2.7 21 12l-9 9.3L3 12l9-9.3Z" stroke="currentColor" stroke-width="1.5"/><path d="M12 7.1 16.8 12 12 16.9 7.2 12 12 7.1Z" stroke="currentColor" stroke-width="1.3"/><path d="M12 9.5v5M9.5 12h5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span><span class="service-num">SERVICE / 03</span></div>
-            <h3>Casino &amp; Gaming Websites</h3>
-            <p>Feature-rich gaming interfaces, account dashboards, payment/API integrations, and admin panels built with security in mind.</p>
-            <div class="service-bottom"><div class="service-tags"><span class="tag">Gaming UI</span><span class="tag">Dashboards</span><span class="tag">API</span></div><span class="service-arrow">↗</span></div><span class="service-status">Selected · custom-built</span>
+
+          <!-- SERVICE 03: 18+ ADULT WEBSITE -->
+          <button class="service-card reveal" type="button" data-pulse aria-label="18 plus Adult Website Development service card. Play animation.">
+            <div class="service-top">
+              <span class="service-icon">
+                <img class="sticker-animation" src="adult-animation.webp" alt="" aria-hidden="true" />
+              </span>
+              <span class="service-num">SERVICE / 03</span>
+            </div>
+            <h3>18+ Adult Website</h3>
+            <p>Developing interactive 18+ adult platforms, custom dashboards, and seamless API connections.</p>
+            <div class="service-bottom">
+              <div class="service-tags"><span class="tag">Age-gated</span><span class="tag">Dashboards</span><span class="tag">API</span></div>
+              <span class="service-arrow">↗</span>
+            </div>
+            <span class="service-status">Selected · custom-built</span>
           </button>
-          <button class="service-card reveal delay-1" type="button" data-pulse aria-label="18 plus Adult Website Development service card. Play animation.">
-            <div class="service-top"><span class="service-icon"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 2.7 20 5.8v5.5c0 4.8-3.3 8.3-8 10-4.7-1.7-8-5.2-8-10V5.8l8-3.1Z" stroke="currentColor" stroke-width="1.5"/><path d="M8 10.2h8M8 13.5h8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><text x="12" y="9.2" text-anchor="middle" fill="currentColor" font-size="4.5" font-family="DM Mono, monospace">18+</text></svg></span><span class="service-num">SERVICE / 04</span></div>
-            <h3>18+ Adult Websites</h3>
-            <p>Private, age-gated platform development with responsive layouts, membership flows, and privacy-conscious architecture.</p>
-            <div class="service-bottom"><div class="service-tags"><span class="tag">Age-gated</span><span class="tag">Membership</span><span class="tag">Privacy</span></div><span class="service-arrow">↗</span></div><span class="service-status">Selected · custom-built</span>
+
+          <!-- SERVICE 04: CASINO WEBSITE -->
+          <button class="service-card reveal delay-1" type="button" data-pulse aria-label="Casino Website Development service card. Play animation.">
+            <div class="service-top">
+              <span class="service-icon">
+                <img class="sticker-animation" src="casino-animation.webp" alt="" aria-hidden="true" />
+              </span>
+              <span class="service-num">SERVICE / 04</span>
+            </div>
+            <h3>Casino Website</h3>
+            <p>Interactive casino platforms with responsive game interfaces, player dashboards, and seamless API integrations.</p>
+            <div class="service-bottom">
+              <div class="service-tags"><span class="tag">Casino UI</span><span class="tag">Dashboards</span><span class="tag">API</span></div>
+              <span class="service-arrow">↗</span>
+            </div>
+            <span class="service-status">Selected · custom-built</span>
           </button>
+
         </div>
       </div>
     </section>
@@ -446,7 +549,7 @@
       revealItems.forEach(item => item.classList.add('visible'));
     }
 
-    // Service folders are intentionally interactive: click = zoom in, then return to rest.
+    // Service cards are interactive: click = zoom in, then return to rest.
     document.querySelectorAll('[data-pulse]').forEach(card => {
       let resetTimer;
       card.addEventListener('click', () => {
