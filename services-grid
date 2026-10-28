@@ -1,0 +1,65 @@
+
+<!-- SERVICE 03: 18+ ADULT WEBSITE -->
+<button class="service-card reveal" type="button" data-pulse>
+  <div class="service-top">
+    <span class="service-icon">
+      <img
+        class="sticker-animation"
+        src="adult-animation.webp"
+        alt="18+ Adult Website animation"
+      />
+    </span>
+    <span class="service-num">SERVICE / 03</span>
+  </div>
+
+  <h3>18+ Adult Website</h3>
+
+  <p>
+    Developing interactive 18+ adult platforms, custom dashboards,
+    and seamless API connections.
+  </p>
+
+  <div class="service-bottom">
+    <div class="service-tags">
+      <span class="tag">Age-gated</span>
+      <span class="tag">Dashboards</span>
+      <span class="tag">API</span>
+    </div>
+    <span class="service-arrow">↗</span>
+  </div>
+
+  <span class="service-status">Selected · custom-built</span>
+</button>
+
+
+<!-- SERVICE 04: CASINO WEBSITE -->
+<button class="service-card reveal delay-1" type="button" data-pulse>
+  <div class="service-top">
+    <span class="service-icon">
+      <img
+        class="sticker-animation"
+        src="casino-animation.webp"
+        alt="Casino Website animation"
+      />
+    </span>
+    <span class="service-num">SERVICE / 04</span>
+  </div>
+
+  <h3>Casino Website</h3>
+
+  <p>
+    Interactive casino platforms with responsive game interfaces,
+    player dashboards, and seamless API integrations.
+  </p>
+
+  <div class="service-bottom">
+    <div class="service-tags">
+      <span class="tag">Casino UI</span>
+      <span class="tag">Dashboards</span>
+      <span class="tag">API</span>
+    </div>
+    <span class="service-arrow">↗</span>
+  </div>
+
+  <span class="service-status">Selected · custom-built</span>
+</button>
