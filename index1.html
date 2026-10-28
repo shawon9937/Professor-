@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#08090b" />
+  <meta name="description" content="VANTA.DEV — full-stack web development, Telegram bots, automation, and custom digital platforms." />
+  <title>VANTA.DEV — Full-Stack Developer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #08090b;
+      --panel: rgba(17, 18, 21, .78);
+      --panel-strong: #111215;
+      --text: #f3f1ec;
+      --muted: #8b8d94;
+      --muted-2: #5d6068;
+      --line: rgba(255,255,255,.105);
+      --line-hot: rgba(255, 111, 35, .42);
+      --accent: #ff7028;
+      --accent-2: #ff9a58;
+      --green: #78e0a1;
+      --mono: "DM Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+      --sans: "Space Grotesk", Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --radius: 22px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 90px; }
+    body {
+      margin: 0;
+      min-width: 320px;
+      color: var(--text);
+      background: var(--bg);
+      font-family: var(--sans);
+      overflow-x: hidden;
+    }
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: -2;
+      background:
+        radial-gradient(ellipse at 72% 12%, rgba(255, 105, 32, .10), transparent 33%),
+        radial-gradient(ellipse at 8% 56%, rgba(80, 65, 52, .12), transparent 34%),
+        linear-gradient(180deg, #08090b 0%, #0a0b0e 52%, #08090b 100%);
+    }
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: -1;
+      opacity: .22;
+      background-image: linear-gradient(rgba(255,255,255,.024) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.024) 1px, transparent 1px);
+      background-size: 48px 48px;
+      mask-image: linear-gradient(to bottom, black, transparent 85%);
+    }
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; }
+    .shell { width: min(1120px, calc(100% - 44px)); margin: 0 auto; }
+    .mono { font-family: var(--mono); }
+    .accent { color: var(--accent); }
+    .muted { color: var(--muted); }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      border-bottom: 1px solid rgba(255,255,255,.075);
+      background: rgba(8,9,11,.78);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+    }
+    .nav {
+      min-height: 76px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+    .brand { display: inline-flex; align-items: center; gap: 12px; font-weight: 700; letter-spacing: -.045em; white-space: nowrap; }
+    .brand-mark {
+      width: 34px; height: 34px; display: grid; place-items: center;
+      border: 1px solid var(--line-hot); border-radius: 11px;
+      color: var(--accent); background: linear-gradient(145deg, rgba(255,112,40,.12), rgba(255,255,255,.02));
+      box-shadow: inset 0 0 18px rgba(255,112,40,.06);
+    }
+    .brand-name { font-size: 15px; }
+    .brand-name span { color: var(--accent); }
+    .nav-links { display: flex; align-items: center; gap: clamp(16px, 3vw, 34px); color: #a8a9ad; font-size: 12px; }
+    .nav-links a { transition: color .2s ease; }
+    .nav-links a:hover { color: var(--text); }
+    .nav-right { display: flex; align-items: center; gap: 14px; }
+    .online { display: inline-flex; align-items: center; gap: 8px; color: #a5aaa8; font: 10px var(--mono); letter-spacing: .08em; text-transform: uppercase; border: 1px solid var(--line); border-radius: 99px; padding: 10px 12px; }
+    .online-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); box-shadow: 0 0 12px rgba(120,224,161,.65); animation: breathe 2s infinite; }
+    .nav-cta { display: inline-flex; align-items: center; gap: 8px; padding: 11px 14px; border-radius: 10px; border: 1px solid rgba(255,112,40,.35); color: var(--text); font-size: 11px; font-weight: 700; transition: .25s ease; }
+    .nav-cta:hover { background: var(--accent); color: #15100d; transform: translateY(-2px); }
+
+    .hero { min-height: 660px; display: grid; grid-template-columns: minmax(0, 1.12fr) minmax(280px, .88fr); align-items: center; gap: 36px; padding: 74px 0 66px; position: relative; }
+    .hero-copy { position: relative; z-index: 2; }
+    .eyebrow { display: flex; align-items: center; gap: 11px; color: var(--accent); font: 10px var(--mono); letter-spacing: .19em; text-transform: uppercase; }
+    .eyebrow::before { content: ""; width: 24px; height: 1px; background: var(--accent); box-shadow: 0 0 10px rgba(255,112,40,.55); }
+    h1 { margin: 24px 0 18px; max-width: 700px; font-size: clamp(47px, 7vw, 88px); line-height: .96; letter-spacing: -.078em; font-weight: 700; }
+    h1 .outline { color: transparent; -webkit-text-stroke: 1px rgba(243,241,236,.62); }
+    h1 .hot { color: var(--accent); }
+    .hero-desc { max-width: 550px; color: #a0a1a7; font-size: 15px; line-height: 1.8; }
+    .hero-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-top: 28px; }
+    .btn { min-height: 48px; display: inline-flex; align-items: center; justify-content: center; gap: 10px; padding: 0 18px; border-radius: 12px; border: 1px solid var(--line); background: rgba(255,255,255,.025); color: var(--text); font-size: 12px; font-weight: 700; transition: transform .22s ease, background .22s ease, border-color .22s ease, color .22s ease; cursor: pointer; }
+    .btn:hover { transform: translateY(-3px); border-color: rgba(255,255,255,.28); }
+    .btn-primary { color: #1a100a; border-color: transparent; background: linear-gradient(110deg, #ff7028, #ff944c); box-shadow: 0 8px 28px rgba(255,112,40,.13); }
+    .btn-primary:hover { background: #ffb17e; border-color: transparent; }
+    .btn svg { width: 15px; height: 15px; }
+    .hero-meta { display: flex; gap: 28px; flex-wrap: wrap; margin-top: 40px; padding-top: 22px; border-top: 1px solid var(--line); }
+    .meta-item { display: flex; flex-direction: column; gap: 6px; }
+    .meta-value { font-size: 18px; font-weight: 600; letter-spacing: -.04em; }
+    .meta-label { color: var(--muted-2); font: 9px var(--mono); letter-spacing: .11em; text-transform: uppercase; }
+
+    .hero-art { min-height: 430px; display: grid; place-items: center; position: relative; isolation: isolate; }
+    .art-glow { position: absolute; width: 310px; height: 310px; border-radius: 50%; background: rgba(255,101,32,.09); filter: blur(55px); animation: glow 5s ease-in-out infinite alternate; }
+    .orbit { position: absolute; width: min(390px, 100%); aspect-ratio: 1; border: 1px solid rgba(255,112,40,.19); border-radius: 50%; animation: rotate 32s linear infinite; }
+    .orbit::before, .orbit::after { content: ""; position: absolute; border-radius: 50%; border: 1px dashed rgba(255,255,255,.13); inset: 20px; }
+    .orbit::after { inset: 48px; border-style: solid; border-color: rgba(255,112,40,.12); }
+    .orbit-point { position: absolute; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 20px rgba(255,112,40,.85); top: 11%; left: 25%; }
+    .orbit-point.two { width: 5px; height: 5px; top: auto; left: auto; bottom: 15%; right: 18%; background: #e7d9c8; box-shadow: 0 0 14px rgba(231,217,200,.6); }
+    .core-card { position: relative; z-index: 1; width: min(300px, 84%); aspect-ratio: .82; border: 1px solid rgba(255,255,255,.14); border-radius: 24px; background: linear-gradient(145deg, rgba(27,28,31,.9), rgba(11,12,14,.92)); box-shadow: 0 35px 100px rgba(0,0,0,.55), inset 0 1px rgba(255,255,255,.06); overflow: hidden; transform: rotate(3deg); animation: float 6s ease-in-out infinite; }
+    .core-card::before { content: ""; position: absolute; inset: 0; background: repeating-linear-gradient(0deg, transparent 0 7px, rgba(255,255,255,.018) 8px 9px); pointer-events: none; }
+    .core-head { display: flex; align-items: center; justify-content: space-between; padding: 17px 17px 0; color: #7e8087; font: 9px var(--mono); letter-spacing: .1em; }
+    .core-head .live { color: var(--green); }
+    .core-symbol { position: absolute; inset: 70px 0 50px; display: grid; place-items: center; }
+    .core-symbol svg { width: 150px; height: 150px; filter: drop-shadow(0 0 25px rgba(255,112,40,.14)); }
+    .core-label { position: absolute; left: 18px; bottom: 18px; right: 18px; border-top: 1px solid var(--line); padding-top: 13px; display: flex; justify-content: space-between; gap: 10px; color: #777a81; font: 9px var(--mono); letter-spacing: .08em; text-transform: uppercase; }
+    .core-label strong { color: var(--text); font-weight: 500; }
+    .art-code { position: absolute; right: -8px; bottom: 18px; writing-mode: vertical-rl; color: rgba(255,255,255,.18); font: 9px var(--mono); letter-spacing: .18em; }
+    .art-caption { position: absolute; left: 0; top: 12%; color: #676970; font: 9px var(--mono); letter-spacing: .12em; writing-mode: vertical-rl; transform: rotate(180deg); }
+
+    .section { padding: 78px 0; position: relative; }
+    .section-head { display: flex; justify-content: space-between; align-items: end; gap: 28px; margin-bottom: 28px; }
+    .section-kicker { color: var(--accent); font: 10px var(--mono); letter-spacing: .16em; text-transform: uppercase; margin-bottom: 12px; }
+    h2 { margin: 0; font-size: clamp(30px, 4.2vw, 49px); letter-spacing: -.065em; line-height: 1.04; }
+    .section-intro { max-width: 360px; color: var(--muted); font-size: 13px; line-height: 1.75; margin: 0 0 3px; }
+    .section-line { height: 1px; background: linear-gradient(90deg, var(--line-hot), var(--line), transparent); margin-bottom: 24px; }
+
+    .services-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+    .service-card {
+      --tilt: 0deg;
+      position: relative; text-align: left; color: var(--text); width: 100%; min-height: 252px; padding: 25px 25px 22px; cursor: pointer;
+      border: 1px solid rgba(255,255,255,.11); border-radius: 17px 17px 22px 22px;
+      background: linear-gradient(145deg, rgba(21,22,25,.91), rgba(13,14,17,.91));
+      overflow: visible; isolation: isolate; transition: border-color .28s ease, background .28s ease, transform .28s ease, box-shadow .28s ease;
+      transform: translateZ(0); border-radius: 10px 18px 22px 22px;
+    }
+    .service-card::before { content: ""; position: absolute; top: -8px; left: 20px; width: 104px; height: 8px; border: 1px solid rgba(255,112,40,.38); border-bottom: 0; border-radius: 8px 8px 0 0; background: rgba(255,112,40,.09); box-shadow: 0 -3px 16px rgba(255,112,40,.035); }
+    .service-card::after { content: ""; position: absolute; width: 190px; height: 190px; border-radius: 50%; background: rgba(255,112,40,.065); filter: blur(38px); right: -90px; bottom: -115px; z-index: -1; transition: opacity .3s ease, transform .3s ease; opacity: .3; }
+    .service-card:hover { transform: translateY(-5px); border-color: rgba(255,112,40,.42); box-shadow: 0 18px 50px rgba(0,0,0,.22); }
+    .service-card:hover::after { opacity: 1; transform: scale(1.2); }
+    .service-card:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+    .service-card.pulse { animation: cardPulse .72s cubic-bezier(.2,.85,.25,1); border-color: rgba(255,112,40,.78); }
+    .service-top { display: flex; align-items: start; justify-content: space-between; gap: 14px; margin-bottom: 25px; }
+    .service-icon { width: 52px; height: 52px; display: grid; place-items: center; border: 1px solid rgba(255,112,40,.26); border-radius: 15px; background: linear-gradient(145deg, rgba(255,112,40,.12), rgba(255,255,255,.018)); color: var(--accent-2); }
+    .service-icon svg { width: 27px; height: 27px; }
+    .service-num { color: #666970; font: 10px var(--mono); letter-spacing: .12em; }
+    .service-card h3 { margin: 0 0 9px; font-size: 22px; letter-spacing: -.05em; }
+    .service-card p { max-width: 460px; color: #96989f; font-size: 12px; line-height: 1.75; margin: 0; }
+    .service-bottom { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-top: 22px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,.075); }
+    .service-tags { display: flex; gap: 7px; flex-wrap: wrap; }
+    .tag { color: #999ba1; font: 9px var(--mono); border: 1px solid rgba(255,255,255,.09); border-radius: 6px; padding: 6px 8px; }
+    .service-arrow { display: grid; place-items: center; color: var(--accent); width: 30px; height: 30px; flex: 0 0 auto; border: 1px solid rgba(255,112,40,.25); border-radius: 9px; transition: transform .25s ease, background .25s ease; }
+    .service-card:hover .service-arrow { transform: rotate(45deg); background: rgba(255,112,40,.1); }
+    .service-status { display: block; margin-top: 10px; min-height: 12px; color: var(--accent-2); font: 9px var(--mono); opacity: 0; transform: translateY(3px); transition: .2s ease; }
+    .service-card.pulse .service-status { opacity: 1; transform: translateY(0); }
+
+    .stack-layout { display: grid; grid-template-columns: .78fr 1.22fr; gap: 16px; }
+    .stack-feature { min-height: 295px; border: 1px solid var(--line); border-radius: 20px; padding: 26px; background: linear-gradient(150deg, rgba(255,112,40,.075), rgba(17,18,21,.85) 48%); display: flex; flex-direction: column; justify-content: space-between; overflow: hidden; position: relative; }
+    .stack-feature::after { content: "</>"; position: absolute; right: -8px; bottom: 5px; color: rgba(255,255,255,.035); font: 700 118px var(--mono); letter-spacing: -.12em; }
+    .stack-feature h3 { font-size: 28px; letter-spacing: -.06em; line-height: 1.1; margin: 18px 0 8px; max-width: 260px; }
+    .stack-feature p { max-width: 280px; color: var(--muted); font-size: 12px; line-height: 1.8; margin: 0; }
+    .mini-label { color: var(--accent); font: 9px var(--mono); letter-spacing: .15em; text-transform: uppercase; }
+    .stack-list { display: grid; gap: 10px; }
+    .stack-row { display: grid; grid-template-columns: 52px 1fr auto; align-items: center; gap: 16px; padding: 17px 19px; border: 1px solid var(--line); border-radius: 15px; background: rgba(17,18,21,.66); transition: border-color .22s ease, transform .22s ease; }
+    .stack-row:hover { border-color: rgba(255,112,40,.32); transform: translateX(3px); }
+    .stack-row-icon { width: 43px; height: 43px; display: grid; place-items: center; border-radius: 12px; border: 1px solid rgba(255,255,255,.1); color: #d6d3cd; background: rgba(255,255,255,.025); }
+    .stack-row-icon svg { width: 21px; height: 21px; }
+    .stack-row h4 { margin: 0 0 5px; font-size: 13px; }
+    .stack-row p { margin: 0; color: var(--muted); font: 10px/1.7 var(--mono); }
+    .stack-index { color: #5c5f66; font: 10px var(--mono); }
+
+    .process-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+    .process-card { min-height: 180px; padding: 22px; border: 1px solid var(--line); border-radius: 17px; background: rgba(17,18,21,.6); transition: transform .25s ease, border-color .25s ease; }
+    .process-card:hover { transform: translateY(-4px); border-color: rgba(255,112,40,.3); }
+    .process-num { display: inline-block; color: var(--accent); font: 10px var(--mono); padding: 7px 9px; border: 1px solid rgba(255,112,40,.24); border-radius: 7px; background: rgba(255,112,40,.06); }
+    .process-card h3 { margin: 24px 0 8px; font-size: 18px; letter-spacing: -.04em; }
+    .process-card p { color: var(--muted); font-size: 12px; line-height: 1.75; margin: 0; }
+
+    .contact-panel { display: grid; grid-template-columns: 1fr auto; gap: 28px; align-items: center; padding: clamp(25px, 5vw, 48px); border: 1px solid rgba(255,112,40,.26); border-radius: 24px; background: radial-gradient(ellipse at 90% 0%, rgba(255,112,40,.12), transparent 44%), linear-gradient(135deg, rgba(23,19,17,.96), rgba(13,14,16,.96)); position: relative; overflow: hidden; }
+    .contact-panel::after { content: ""; position: absolute; right: 15%; bottom: -145px; width: 270px; height: 270px; border: 1px solid rgba(255,112,40,.12); border-radius: 50%; box-shadow: 0 0 0 26px rgba(255,112,40,.018), 0 0 0 54px rgba(255,112,40,.014); pointer-events: none; }
+    .contact-copy, .contact-actions { position: relative; z-index: 1; }
+    .contact-copy h2 { margin: 12px 0; }
+    .contact-copy p { color: #a1a0a0; font-size: 13px; line-height: 1.8; max-width: 510px; margin: 0; }
+    .contact-actions { display: flex; flex-direction: column; gap: 10px; min-width: 205px; }
+    .contact-actions .btn { justify-content: space-between; }
+    .contact-note { margin-top: 18px; color: #66676d; font: 9px var(--mono); letter-spacing: .06em; }
+
+    .footer { padding: 28px 0 34px; }
+    .footer-terminal { display: flex; align-items: center; justify-content: space-between; gap: 20px; border: 1px solid var(--line); border-radius: 13px; padding: 15px 18px; background: rgba(13,14,16,.65); color: #666970; font: 10px var(--mono); }
+    .terminal-prompt { color: var(--accent); }
+    .cursor { display: inline-block; width: 7px; height: 12px; background: var(--accent); vertical-align: -2px; margin-left: 5px; animation: blink 1s steps(2, start) infinite; }
+    .footer-bottom { display: flex; align-items: center; justify-content: space-between; gap: 18px; padding-top: 19px; color: #555860; font: 9px var(--mono); letter-spacing: .08em; text-transform: uppercase; }
+    .footer-links { display: flex; gap: 16px; }
+    .footer-links a:hover { color: var(--accent); }
+
+    .reveal { opacity: 0; transform: translateY(18px); transition: opacity .7s ease, transform .7s cubic-bezier(.2,.7,.2,1); }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .delay-1 { transition-delay: .08s; } .delay-2 { transition-delay: .16s; } .delay-3 { transition-delay: .24s; }
+    @keyframes rotate { to { transform: rotate(360deg); } }
+    @keyframes float { 0%,100% { transform: translateY(0) rotate(3deg); } 50% { transform: translateY(-12px) rotate(1deg); } }
+    @keyframes glow { from { transform: scale(.88); opacity: .55; } to { transform: scale(1.1); opacity: .95; } }
+    @keyframes breathe { 0%,100% { opacity: 1; } 50% { opacity: .45; } }
+    @keyframes blink { to { visibility: hidden; } }
+    @keyframes cardPulse { 0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255,112,40,0); } 28% { transform: scale(1.025); box-shadow: 0 0 0 7px rgba(255,112,40,.075); } 58% { transform: scale(.995); } 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255,112,40,0); } }
+
+    @media (max-width: 850px) {
+      .nav-links { display: none; }
+      .hero { grid-template-columns: 1fr .7fr; gap: 12px; min-height: 590px; }
+      .hero-art { min-height: 350px; }
+      .orbit { width: 310px; }
+      .core-card { width: min(245px, 90%); }
+      .core-symbol svg { width: 125px; height: 125px; }
+      .art-caption { display: none; }
+      .stack-layout { grid-template-columns: 1fr; }
+      .stack-feature { min-height: 220px; }
+    }
+    @media (max-width: 620px) {
+      .shell { width: min(100% - 30px, 520px); }
+      .nav { min-height: 66px; gap: 10px; }
+      .brand-mark { width: 31px; height: 31px; }
+      .brand-name { font-size: 13px; }
+      .online { padding: 8px 9px; font-size: 8px; }
+      .nav-cta { display: none; }
+      .hero { display: flex; flex-direction: column; align-items: stretch; gap: 0; padding: 58px 0 48px; }
+      h1 { font-size: clamp(47px, 13vw, 70px); margin-top: 21px; }
+      .hero-desc { font-size: 13px; }
+      .hero-art { min-height: 315px; margin-top: 24px; }
+      .orbit { width: 300px; max-width: 90%; }
+      .core-card { width: 218px; }
+      .core-symbol { inset: 55px 0 45px; }
+      .core-symbol svg { width: 120px; height: 120px; }
+      .art-code { right: 4px; bottom: 0; }
+      .hero-meta { margin-top: 30px; gap: 22px; }
+      .meta-value { font-size: 16px; }
+      .section { padding: 56px 0; }
+      .section-head { display: block; margin-bottom: 23px; }
+      .section-intro { margin-top: 13px; font-size: 12px; }
+      .services-grid { grid-template-columns: 1fr; gap: 12px; }
+      .service-card { min-height: 235px; padding: 22px 19px 18px; }
+      .service-card h3 { font-size: 20px; }
+      .service-top { margin-bottom: 20px; }
+      .stack-row { grid-template-columns: 43px 1fr auto; gap: 12px; padding: 15px 13px; }
+      .stack-row-icon { width: 39px; height: 39px; }
+      .stack-row p { font-size: 9px; }
+      .stack-feature { padding: 23px; }
+      .process-grid { grid-template-columns: 1fr; }
+      .process-card { min-height: 150px; }
+      .process-card h3 { margin-top: 18px; }
+      .contact-panel { grid-template-columns: 1fr; gap: 24px; padding: 25px 20px; }
+      .contact-actions { min-width: 0; }
+      .contact-actions .btn { width: 100%; }
+      .footer-terminal { align-items: flex-start; flex-direction: column; gap: 9px; font-size: 9px; }
+      .footer-bottom { align-items: flex-start; flex-direction: column; gap: 12px; line-height: 1.7; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+      .reveal { opacity: 1; transform: none; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="shell nav">
+      <a class="brand" href="#top" aria-label="VANTA.DEV home">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" width="20" height="20"><path d="M12 2.8v5.1M12 16.1v5.1M2.8 12h5.1M16.1 12h5.1" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"/><path d="M8.2 8.2h7.6v7.6H8.2z" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="12" r="1.6" fill="currentColor"/></svg>
+        </span>
+        <span class="brand-name">VANTA<span>.</span>DEV</span>
+      </a>
+      <nav class="nav-links" aria-label="Main navigation">
+        <a href="#services">Services</a>
+        <a href="#stack">Tech stack</a>
+        <a href="#process">Process</a>
+        <a href="#contact">Contact</a>
+      </nav>
+      <div class="nav-right">
+        <span class="online"><span class="online-dot"></span> Available for work</span>
+        <a class="nav-cta" href="#contact">Let's talk <span class="accent">↗</span></a>
+      </div>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="shell hero">
+      <div class="hero-copy reveal visible">
+        <div class="eyebrow">Full-stack engineering / 2026</div>
+        <h1>I BUILD<br /><span class="outline">DIGITAL</span><br /><span class="hot">SYSTEMS.</span></h1>
+        <p class="hero-desc">Custom websites, Telegram bots, and backend systems built with precision. From the first interface to the final API — engineered to look sharp and work reliably.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#contact">Start a project <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h13M12 5l7 7-7 7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+          <a class="btn" href="#services">Explore services <span class="accent">↓</span></a>
+        </div>
+        <div class="hero-meta">
+          <div class="meta-item"><span class="meta-value">04<span class="accent">+</span></span><span class="meta-label">Core services</span></div>
+          <div class="meta-item"><span class="meta-value">Full-stack</span><span class="meta-label">Front-end + back-end</span></div>
+          <div class="meta-item"><span class="meta-value">Custom</span><span class="meta-label">Built around your goals</span></div>
+        </div>
+      </div>
+      <div class="hero-art reveal delay-2" aria-label="Abstract animated developer emblem">
+        <div class="art-glow"></div>
+        <div class="orbit"><span class="orbit-point"></span><span class="orbit-point two"></span></div>
+        <span class="art-caption">DESIGN / LOGIC / DEPLOY</span>
+        <div class="core-card">
+          <div class="core-head"><span>VANTA / CORE</span><span class="live">● ONLINE</span></div>
+          <div class="core-symbol">
+            <svg viewBox="0 0 180 180" fill="none" aria-hidden="true">
+              <circle cx="90" cy="90" r="72" stroke="rgba(255,112,40,.25)" stroke-width="1" stroke-dasharray="2 7"/>
+              <circle cx="90" cy="90" r="57" stroke="rgba(255,255,255,.16)" stroke-width="1"/>
+              <path d="M90 31 119 61 90 90 61 61 90 31Z" stroke="#FF8A4A" stroke-width="1.5"/>
+              <path d="M61 61 34 90 61 119 90 90M119 61 146 90 119 119 90 90" stroke="rgba(243,241,236,.76)" stroke-width="1.5"/>
+              <path d="M61 119 90 149 119 119M90 90v59M34 90h112" stroke="rgba(255,112,40,.7)" stroke-width="1.5"/>
+              <circle cx="90" cy="90" r="10" fill="#FF7028" fill-opacity=".16" stroke="#FF8A4A" stroke-width="1.5"/>
+              <circle cx="90" cy="90" r="3" fill="#FF8A4A"/>
+              <path d="M90 11v9M90 160v9M11 90h9M160 90h9" stroke="#FF8A4A" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="core-label"><span><strong>Build</strong> with intent</span><span>V.01 / 2026</span></div>
+        </div>
+        <div class="art-code">HTML · CSS · JS · PYTHON · DJANGO</div>
+      </div>
+    </section>
+
+    <section class="section" id="services">
+      <div class="shell">
+        <div class="section-head reveal">
+          <div><div class="section-kicker">01 / What I build</div><h2>Services with<br /><span class="accent">real purpose.</span></h2></div>
+          <p class="section-intro">Choose a service to see its interaction. Every project is tailored to your requirements, audience, and workflow.</p>
+        </div>
+        <div class="section-line"></div>
+        <div class="services-grid">
+          <button class="service-card reveal" type="button" data-pulse aria-label="Web Development service card. Play animation.">
+            <div class="service-top"><span class="service-icon"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="2.8" y="3.8" width="18.4" height="16.4" rx="2.4" stroke="currentColor" stroke-width="1.5"/><path d="M3.5 8.2h17M7 6h.1M10 6h.1M8.5 12.1l-2.2 2.1 2.2 2.1M15.5 12.1l2.2 2.1-2.2 2.1M13.4 11.7l-2 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="service-num">SERVICE / 01</span></div>
+            <h3>Web Development</h3>
+            <p>Modern, responsive websites and web applications with polished UI, smooth interactions, and reliable backend functionality.</p>
+            <div class="service-bottom"><div class="service-tags"><span class="tag">Business</span><span class="tag">Portfolio</span><span class="tag">Web apps</span></div><span class="service-arrow">↗</span></div><span class="service-status">Selected · custom-built</span>
+          </button>
+          <button class="service-card reveal delay-1" type="button" data-pulse aria-label="Telegram Bot Development service card. Play animation.">
+            <div class="service-top"><span class="service-icon"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m3 11.1 17.5-7.2-4.1 17.2-4.6-6.2-4.2 2.9.7-5.1L20.5 3.9" stroke="currentColor" stroke-width="1.55" stroke-linecap="round" stroke-linejoin="round"/><path d="m7.6 12.7 5.1 2.2" stroke="currentColor" stroke-width="1.55" stroke-linecap="round"/></svg></span><span class="service-num">SERVICE / 02</span></div>
+            <h3>Telegram Bot Development</h3>
+            <p>Custom Telegram bots for automation, user flows, notifications, APIs, admin tools, and day-to-day operations.</p>
+            <div class="service-bottom"><div class="service-tags"><span class="tag">Automation</span><span class="tag">Bot API</span><span class="tag">Integrations</span></div><span class="service-arrow">↗</span></div><span class="service-status">Selected · custom-built</span>
+          </button>
+          <button class="service-card reveal" type="button" data-pulse aria-label="Casino and Gaming Website Development service card. Play animation.">
+            <div class="service-top"><span class="service-icon"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 2.7 21 12l-9 9.3L3 12l9-9.3Z" stroke="currentColor" stroke-width="1.5"/><path d="M12 7.1 16.8 12 12 16.9 7.2 12 12 7.1Z" stroke="currentColor" stroke-width="1.3"/><path d="M12 9.5v5M9.5 12h5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span><span class="service-num">SERVICE / 03</span></div>
+            <h3>Casino &amp; Gaming Websites</h3>
+            <p>Feature-rich gaming interfaces, account dashboards, payment/API integrations, and admin panels built with security in mind.</p>
+            <div class="service-bottom"><div class="service-tags"><span class="tag">Gaming UI</span><span class="tag">Dashboards</span><span class="tag">API</span></div><span class="service-arrow">↗</span></div><span class="service-status">Selected · custom-built</span>
+          </button>
+          <button class="service-card reveal delay-1" type="button" data-pulse aria-label="18 plus Adult Website Development service card. Play animation.">
+            <div class="service-top"><span class="service-icon"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 2.7 20 5.8v5.5c0 4.8-3.3 8.3-8 10-4.7-1.7-8-5.2-8-10V5.8l8-3.1Z" stroke="currentColor" stroke-width="1.5"/><path d="M8 10.2h8M8 13.5h8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><text x="12" y="9.2" text-anchor="middle" fill="currentColor" font-size="4.5" font-family="DM Mono, monospace">18+</text></svg></span><span class="service-num">SERVICE / 04</span></div>
+            <h3>18+ Adult Websites</h3>
+            <p>Private, age-gated platform development with responsive layouts, membership flows, and privacy-conscious architecture.</p>
+            <div class="service-bottom"><div class="service-tags"><span class="tag">Age-gated</span><span class="tag">Membership</span><span class="tag">Privacy</span></div><span class="service-arrow">↗</span></div><span class="service-status">Selected · custom-built</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="stack">
+      <div class="shell">
+        <div class="section-head reveal">
+          <div><div class="section-kicker">02 / Under the hood</div><h2>Built with a<br /><span class="accent">solid stack.</span></h2></div>
+          <p class="section-intro">A practical toolkit for interfaces, server-side logic, data storage, and third-party integrations.</p>
+        </div>
+        <div class="section-line"></div>
+        <div class="stack-layout">
+          <div class="stack-feature reveal">
+            <div><span class="mini-label">Engineering / toolkit</span><h3>From interface to infrastructure.</h3><p>Clean front-end work meets maintainable backend architecture — so your product can grow beyond its first release.</p></div>
+            <span class="mini-label">Designed to scale ↗</span>
+          </div>
+          <div class="stack-list">
+            <div class="stack-row reveal"><span class="stack-row-icon"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m8.5 7-5 5 5 5M15.5 7l5 5-5 5M14 4l-4 16" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div><h4>Front-end</h4><p>HTML5 · CSS3 · JavaScript · Responsive UI</p></div><span class="stack-index">01</span></div>
+            <div class="stack-row reveal delay-1"><span class="stack-row-icon"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3.2 19 6v5.2c0 4.1-2.8 7.4-7 9.6-4.2-2.2-7-5.5-7-9.6V6l7-2.8Z" stroke="currentColor" stroke-width="1.5"/><path d="m9 12 2 2 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div><h4>Back-end</h4><p>Python · Django · REST APIs · Authentication</p></div><span class="stack-index">02</span></div>
+            <div class="stack-row reveal delay-2"><span class="stack-row-icon"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><ellipse cx="12" cy="5.5" rx="7.5" ry="2.8" stroke="currentColor" stroke-width="1.5"/><path d="M4.5 5.5v12.8c0 1.6 3.4 2.9 7.5 2.9s7.5-1.3 7.5-2.9V5.5M4.5 11.7c0 1.6 3.4 2.9 7.5 2.9s7.5-1.3 7.5-2.9" stroke="currentColor" stroke-width="1.5"/></svg></span><div><h4>Data &amp; integrations</h4><p>SQLite · PostgreSQL · Webhooks · External APIs</p></div><span class="stack-index">03</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="process">
+      <div class="shell">
+        <div class="section-head reveal">
+          <div><div class="section-kicker">03 / The workflow</div><h2>Clear steps.<br /><span class="accent">No guesswork.</span></h2></div>
+          <p class="section-intro">A straightforward process that keeps the scope, progress, and final delivery clear from day one.</p>
+        </div>
+        <div class="section-line"></div>
+        <div class="process-grid">
+          <article class="process-card reveal"><span class="process-num">STEP / 01</span><h3>Discuss &amp; plan</h3><p>Define the goal, required features, user journey, timeline, and technical approach.</p></article>
+          <article class="process-card reveal delay-1"><span class="process-num">STEP / 02</span><h3>Design &amp; develop</h3><p>Build the interface and backend with responsive layouts, integrations, and practical testing.</p></article>
+          <article class="process-card reveal delay-2"><span class="process-num">STEP / 03</span><h3>Test &amp; launch</h3><p>Review the details, fix issues, prepare deployment, and hand over a working product.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="contact">
+      <div class="shell">
+        <div class="contact-panel reveal">
+          <div class="contact-copy"><div class="section-kicker">04 / Ready when you are</div><h2>Have a project<br />in mind<span class="accent">?</span></h2><p>Tell me what you want to build. Let's discuss the requirements and turn your idea into a polished, working product.</p><div class="contact-note">DIRECT CONTACT / PROJECT ENQUIRIES WELCOME</div></div>
+          <div class="contact-actions">
+            <a class="btn btn-primary" href="https://t.me/your_username" target="_blank" rel="noopener noreferrer">Contact the Developer <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+            <a class="btn" href="https://t.me/your_username" target="_blank" rel="noopener noreferrer">Message on Telegram <span class="accent">↗</span></a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="shell footer">
+    <div class="footer-terminal"><span><span class="terminal-prompt">vanta@dev:~$</span> build --your-idea</span><span>status: ready <span class="cursor"></span></span></div>
+    <div class="footer-bottom"><span>© <span id="year">2026</span> VANTA.DEV · Independent developer</span><div class="footer-links"><a href="#services">Services</a><a href="#stack">Stack</a><a href="#contact">Contact</a></div><span>Made with intent / not templates</span></div>
+  </footer>
+
+  <script>
+    // Reveal sections as they enter the viewport.
+    const revealItems = document.querySelectorAll('.reveal:not(.visible)');
+    if ('IntersectionObserver' in window) {
+      const revealObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.12 });
+      revealItems.forEach(item => revealObserver.observe(item));
+    } else {
+      revealItems.forEach(item => item.classList.add('visible'));
+    }
+
+    // Service folders are intentionally interactive: click = zoom in, then return to rest.
+    document.querySelectorAll('[data-pulse]').forEach(card => {
+      let resetTimer;
+      card.addEventListener('click', () => {
+        card.classList.remove('pulse');
+        void card.offsetWidth; // restart the CSS animation on repeated clicks
+        card.classList.add('pulse');
+        window.clearTimeout(resetTimer);
+        resetTimer = window.setTimeout(() => card.classList.remove('pulse'), 760);
+      });
+    });
+
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
